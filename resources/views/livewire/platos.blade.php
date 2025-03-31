@@ -1,5 +1,4 @@
 <div>
-    <!-- buscador y menú -->
     <div class="flex ...">
         <div class="flex-auto w-32 ...">
             <input  wire:keydown.enter="clickBuscar()" type="search" wire:model="search" class="w-full max-w-md px-4 py-2 text-sm text-[#000000] border border-[#37383a] rounded-lg bg-[#d1d4da] focus:ring-[#c70606] focus:border-[#c70606] " placeholder="Buscar Producto" />

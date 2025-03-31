@@ -5,14 +5,15 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\PromocionModel;
 use Livewire\WithFileUploads;
+use Carbon\Carbon;
 
 class Promociones extends Component
 {
     use WithFileUploads;
 
     public $showModal = false;
-    public $search = '';
     public $id = '';
+    public $search = '';
     public $nombre = '';
     public $descuento = '';
     public $fecha = '';
@@ -36,14 +37,14 @@ class Promociones extends Component
         $this->showModal = false;
     }
 
-    public function editar($id){
+    public function edit($id){
         $promocion = PromocionModel::findOrFail($id);
-        $this->id = $id;
+        $this->id = $promocion->id_promocion;
         $this->nombre = $promocion->nombre;
         $this->descuento = $promocion->descuento;
         $this->fecha = $promocion->fecha;
         $this->foto = $promocion->foto;
-        $this->openModal;
+        $this->openModal();
     }
 
     public function guardar(){
@@ -60,6 +61,7 @@ class Promociones extends Component
             'nombre' => $this->nombre,
             'descuento' => $this->descuento,
             'fecha' => $this->fecha,
+            'estado' => 'activo',
         ];
         if ($this->foto && is_object($this->foto)) {
             $nameImg = 'c' . now()->format('YmdHis') . '.jpg';
