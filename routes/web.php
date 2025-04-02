@@ -12,6 +12,11 @@ use App\Http\Controllers\VentaController;
 
 
 Route::get('/',[HomeController::class,'index'])->name('home');
+
+Route::get('/cliente',[ClienteController::class,'index'])
+->name('cliente.index');
+
 Route::get('/cliente',[ClienteController::class,'index'])->name('cliente.index');
+
 Route::get('/promociones', [PromocionController::class, 'index'])->name('promociones.index');
 Route::get('/ventas', [VentaController::class, 'index'])->name('ventas.index');
