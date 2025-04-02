@@ -79,7 +79,7 @@
     
             <!-- Título centrado -->
             <div class="title">
-                <a class="Pizz" href="{{route('home')}}">PICANTERIA DON MARVIN</a>
+                <a class="Pizz" href="{{route('home')}}">PICANTERIA DOÑA MARBIN</a>
             </div>
     
             <!-- Logo a la derecha -->

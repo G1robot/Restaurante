@@ -13,21 +13,19 @@ class ClienteCRUD extends Component
     public $nombre, $apellidos, $ci, $cliente_id;
     public $modalOpen = false;
     public $search = '';
-    public $searchQuery = '';
 
     protected $rules = [
         'nombre' => 'required|string|max:80',
         'apellidos' => 'required|string|max:80',
-        'ci' => 'required|string|max:30|unique:clientes,ci',
+        'ci' => 'required|string|max:30|unique:Cliente,ci',
     ];
 
     public function render()
     {
-        $clientes = Cliente::where(function($query) {
-            $query->where('nombre', 'ilike', "%{$this->searchQuery}%")
-                ->orWhere('apellidos', 'ilike', "%{$this->searchQuery}%")
-                ->orWhere('ci', 'ilike', "%{$this->searchQuery}%");
-        })->paginate(10);
+        $clientes = Cliente::where('nombre', 'like', '%' . $this->search . '%')
+            ->orWhere('apellidos', 'like', '%' . $this->search . '%')
+            ->orWhere('ci', 'like', '%' . $this->search . '%')
+            ->paginate(10);
 
         return view('livewire.cliente-c-r-u-d', compact('clientes'));
     }
@@ -72,7 +70,7 @@ class ClienteCRUD extends Component
         $this->validate([
             'nombre' => 'required|string|max:80',
             'apellidos' => 'required|string|max:80',
-            'ci' => "required|string|max:30|unique:clientes,ci,{$this->cliente_id},id_cliente",
+            'ci' => "required|string|max:30|unique:Cliente,ci,{$this->cliente_id},id_cliente",
         ]);
 
         $cliente = Cliente::findOrFail($this->cliente_id);
