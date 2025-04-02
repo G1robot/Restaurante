@@ -16,13 +16,13 @@
     </div>
     <div class="flex flex-wrap justify-start gap-6 p-0 m-5">
         @forelse($promociones as $item)
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden w-[270px] h-[450px] flex flex-col m-0">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden w-[270px] h-[500px] flex flex-col m-0">
                 <img src="/storage/img/{{$item->foto}}" class="w-full h-[60%] object-cover">
                 <div class="p-5 text-center flex-grow">
                     <h3 class="text-xl font-semibold text-gray-800">{{ $item->nombre }}</h3>
                     <p class="text-gray-600 text-lg">Descuento: <span class="font-medium text-gray-700">{{ $item->descuento }}</span></p>
                     <p class="text-gray-500">Fecha Límite: {{ $item->fecha }}</p>
-
+                    <p class="text-gray-500">Estado: {{ $item->estado }}</p>
                     <div class="flex space-x-2 mt-4 justify-center">
                         <button wire:click.prevent="edit({{$item->id_promocion}})" 
                             class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">

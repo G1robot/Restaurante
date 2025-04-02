@@ -72,8 +72,10 @@ class Promociones extends Component
         if ($this->id) {
             $promocion = PromocionModel::findOrFail($this->id);
             $promocion->update($data);
+            $this->alert('success', 'Promocion Actualizada');
         } else {
             PromocionModel::create($data);
+            $this->alert('success', 'Promocion Creada');
         }
         $this->reset();
         $this->closeModal();
@@ -96,7 +98,6 @@ class Promociones extends Component
     {
         $this->deshabilitarPromocion();
         $promociones = PromocionModel::where('nombre', 'like', '%'.$this->search.'%')
-            ->where('estado', 'activo')
             ->get();
         return view('livewire.promociones', compact('promociones'));
     }
