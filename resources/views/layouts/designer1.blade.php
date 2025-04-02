@@ -4,130 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    @vite('resources/css/app.css')
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <title>Picantería Doña Marvin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-    @livewireStyles
-
-    @livewireScripts
-
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    {{-- <x-livewire-alert::scripts /> --}}
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> --}}
-
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-        }
-
-        .navbar {
-            background-color: #e29f0f !important;
-            padding: 1rem;
-        }
-
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 1.5rem;
-            color: #f8f9fa !important;
-        }
-
-        .navbar-nav .nav-link {
-            color: #f8f9fa !important;
-            transition: 0.3s;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #fbd46d !important;
-        }
-
-        .dropdown-item {
-            color: #f8f9fa;
-            transition: 0.3s;
-        }
-
-        .dropdown-item:hover {
-            background-color: #fbd46d;
-            color: black;
-        }
-
-        .title {
-            font-family: 'Lobster', cursive;
-            font-size: 2.5rem;
-            color: #d62828;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-        }
-    </style>
+    @livewireStyles 
 </head>
-<body>
-
-    <header class="bg-[#ffbb2a] font-bold">
-        <div class="flex items-center justify-between">
-            <!-- Logo a la izquierda -->
-            <div class="flex-none w-20">
-                <img width="250" src="/img/logo.png" class="logo">
+<body class="bg-gray-100 font-sans antialiased">
+    <header class="bg-cover bg-center py-[45px] text-white relative" style="background-image: url('/img/fondo.jpg');">
+        <div class="absolute inset-0 bg-black opacity-60"></div>
+        <div class="flex items-center justify-between px-6 relative z-10">
+            <div class="w-32">
+                <img src="/img/logo.png" alt="Logo de la picanteería" class="rounded-lg shadow-xl transform transition-all hover:scale-110 hover:rotate-6">
             </div>
-    
-            <!-- Título centrado -->
-            <div class="title">
-                <a class="Pizz" href="{{route('home')}}">PICANTERIA DON MARVIN</a>
+            <div class="text-4xl sm:text-5xl font-extrabold text-center text-yellow-400 drop-shadow-2xl">
+                <a class="text-white hover:text-red-600 transition-all ease-in-out duration-300 transform hover:scale-105" href="{{ route('home') }}">PICANTERÍA DOÑA MARVIN</a>
             </div>
-    
-            <!-- Logo a la derecha -->
-            <div class="flex-none w-20">
-                <img width="250" src="/img/logo.png" class="logo">
+            <div class="w-32">
+                <img src="/img/logo.png" alt="Logo de la picanteería" class="rounded-lg shadow-xl transform transition-all hover:scale-110 hover:rotate-6">
             </div>
         </div>
     </header>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Usuario </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Promociones</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('cliente.index') }}">Clientes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Ventas</a>
-                    </li>
-                    {{-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ Auth::user()->name }}
+    <nav class="bg-red-700 shadow-xl rounded-b-xl">
+        <div class="container mx-auto px-6 py-5">
+            <div class="flex justify-center items-center">
+                <ul class="flex space-x-12 text-white font-semibold text-lg">
+                    <li>
+                        <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="{{ route('promociones.index') }}">
+                            <i class="fas fa-users mr-2"></i>Usuarios
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ route('profile.show') }}">{{ __('Profile') }}</a></li>
-                            <li>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault(); this.closest('form').submit();">
-                                        {{ __('Log Out') }}
-                                    </a>
-                                </form>
-                            </li>
-                        </ul>
-                    </li> --}}
+                    </li>
+                    <li>
+                        <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="{{ route('promociones.index') }}">
+                            <i class="fas fa-gift mr-2"></i>Promociones
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="{{ route('cliente.index') }}">
+                            <i class="fas fa-users-cog mr-2"></i>Clientes
+                        </a>
+                    </li>
+                    <li>
+                        <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="#">
+                            <i class="fas fa-chart-line mr-2"></i>Ventas
+                        </a>
+                    </li>
                 </ul>
+            </div>
         </div>
     </nav>
-
-    <section>
-        @yield('content')
-        
+    <section class="flex flex-grow justify-center items-center py-16 bg-gray-200">
+        <div class="container mx-auto px-6">
+            @yield('content')
+        </div>
     </section>
+    @livewireScripts
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

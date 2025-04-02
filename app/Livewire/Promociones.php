@@ -35,6 +35,7 @@ class Promociones extends Component
     public function closeModal()
     {
         $this->showModal = false;
+        $this->reset();
     }
 
     public function edit($id){

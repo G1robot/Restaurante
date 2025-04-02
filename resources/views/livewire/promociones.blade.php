@@ -1,55 +1,43 @@
 <div class="container mx-auto px-8">
-    <h2 class="text-center text-3xl font-bold mb-8 relative">
+    <!-- Título de la sección -->
+    <h2 class="text-center text-4xl font-bold mb-8 relative text-yellow-500">
         <span class="italic text-gray-900">PROMOCIONES</span>
         <div class="absolute left-0 top-1/2 transform -translate-y-2/4 w-1/4 border-t-2 border-gray-300"></div>
         <div class="absolute right-0 top-1/2 transform -translate-y-2/4 w-1/4 border-t-2 border-gray-300"></div>
     </h2>
-
     <div class="flex justify-between items-center mb-6">
-        <button wire:click="openModal()" class="bg-[#f94f2c] text-white font-bold px-6 py-2 rounded-md shadow-lg transition duration-300 hover:bg-[#d83d21]">NUEVA PROMOCIÓN</button>
-        
+        <button wire:click="openModal()" class="bg-red-600 text-white font-bold px-6 py-3 rounded-md shadow-lg transition duration-300 hover:bg-red-700 text-lg">NUEVA PROMOCIÓN</button>
         <div class="flex items-center relative w-full max-w-[350px]">
-            <input type="text" wire:model.debounce.500ms="search" wire:keydown.enter="buscar" placeholder="Buscar..." class="py-2 pl-10 pr-4 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f94f2c] focus:border-[#f94f2c] h-10">
-            <button wire:click="buscar" class="absolute left-3 top-2/4 transform -translate-y-2/4 text-gray-500">
+            <input type="text" wire:model.debounce.500ms="search" wire:keydown.enter="buscar" placeholder="Buscar..." class="py-2 pl-10 pr-4 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f94f2c] focus:border-[#f94f2c] h-10 text-lg">
+            <button wire:click="buscar" class="absolute left-3 top-2/4 transform -translate-y-2/4 text-gray-500 text-lg">
                 <i class="fas fa-search"></i>
             </button>
         </div>
     </div>
-    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-        <table class="w-full border-collapse">
-            <thead class="bg-[#f94f2c] text-white">
-                <tr>
-                    <th class="px-4 py-3 text-left">Nombre</th>
-                    <th class="px-4 py-3 text-left">Descuento</th>
-                    <th class="px-4 py-3 text-left">Fecha Límite</th>
-                    <th class="px-4 py-3 text-center">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($promociones as $item)
-                    <tr class="border-b hover:bg-gray-100 transition">
-                        <td class="px-4 py-3 flex items-center space-x-3">
-                            <img src="/storage/img/{{$item->foto}}" class="w-12 h-12 object-cover rounded-md shadow-sm">
-                            <span>{{ $item->nombre }}</span>
-                        </td>
-                        <td class="px-4 py-3 text-gray-700 font-medium">{{$item->descuento}}%</td>
-                        <td class="px-4 py-3 text-gray-600">{{ $item->fecha }}</td>
-                        <td class="px-4 py-3 flex justify-center space-x-2">
-                            <button wire:click.prevent="edit({{$item->id_promocion}})" class="bg-green-500 text-white w-24 px-3 py-1 rounded hover:bg-green-600 flex items-center justify-center space-x-1">
-                                <span>Editar</span>
-                            </button>
-                            <button wire:click.prevent="deshabilitar({{$item->id_promocion}})" class="bg-blue-500 text-white w-24 px-3 py-1 rounded hover:bg-blue-600 flex items-center justify-center space-x-1">
-                                <span>Deshabilitar</span>
-                            </button>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" class="text-center py-4 text-gray-600">No hay promociones disponibles.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+    <div class="flex flex-wrap justify-start gap-6 p-0 m-5">
+        @forelse($promociones as $item)
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden w-[270px] h-[450px] flex flex-col m-0">
+                <img src="/storage/img/{{$item->foto}}" class="w-full h-[60%] object-cover">
+                <div class="p-5 text-center flex-grow">
+                    <h3 class="text-xl font-semibold text-gray-800">{{ $item->nombre }}</h3>
+                    <p class="text-gray-600 text-lg">Descuento: <span class="font-medium text-gray-700">{{ $item->descuento }}</span></p>
+                    <p class="text-gray-500">Fecha Límite: {{ $item->fecha }}</p>
+
+                    <div class="flex space-x-2 mt-4 justify-center">
+                        <button wire:click.prevent="edit({{$item->id_promocion}})" 
+                            class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">
+                            Editar
+                        </button> 
+                        <button wire:click.prevent="deshabilitar({{$item->id_promocion}})" 
+                            class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
+                            Deshabilitar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <p class="text-center text-gray-600 col-span-full">No hay promociones disponibles.</p>
+        @endforelse
     </div>
     @if($showModal)
         <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md z-50">
@@ -97,10 +85,9 @@
                             @endif
                         </div>
                     @endif
-
                     <div class="flex justify-between space-x-4 mt-4">
                         <button type="submit"
-                            class="w-full bg-[#f94f2c] text-white font-bold py-3 rounded-md transition hover:bg-[#d83d21] focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            class="w-full bg-red-600 text-white font-bold py-3 rounded-md transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-orange-500">
                             Guardar
                         </button>
                         <button type="button" wire:click="closeModal()"
