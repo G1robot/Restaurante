@@ -48,7 +48,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="{{ route('ventas.index') }}>
+                        <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="{{ route('ventas.index') }}">
                             <i class="fas fa-chart-line mr-2"></i>Ventas
                         </a>
                     </li>
