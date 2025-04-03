@@ -45,7 +45,7 @@
             </div>
             <!-- Lista de Platos -->
             <div class=" bg-white grid grid-cols-2 gap-4 rounded-lg shadow-md">
-                @forelse ($platos as $item)
+                @forelse ($platos->where('stock', '>', 0) as $item)
                     <div class="flex items-center space-x-4 p-4 border border-gray-400 rounded-lg">
                         <div class="shrink-0">
                             <img class="w-16 h-16 rounded-lg" src="/storage/img/{{$item->foto}}" alt="Plato">
@@ -115,14 +115,105 @@
                     <option value="{{ $pago->id_pago }}">{{ $pago->nombre }}</option>
                 @endforeach
             </select>
+            @error('id_pago')
+                    <span class="error text-red-600">{{$message}}</span>
+            @enderror
 
-            <!-- Guardar la ID del tipo de pago -->
             <input type="hidden" wire:model="tipoPagoId">
 
-            <!-- Botón de Pagar -->
             <button wire:click="guardar()" class="bg-blue-500 text-white w-full py-2 rounded">Pagar</button>
         </div>
 
 
     </div>
+
+    @if($showModal)
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-xl max-w-lg w-full border border-gray-300">
+        
+            <div class="flex items-center justify-between border-b pb-4">
+                <img src="/img/logo.png" alt="Logo" class="w-16 h-16">
+                <div class="text-right">
+                    <h2 class="text-xl font-bold text-gray-800">Picantería Doña Marvin</h2>
+                </div>
+            </div>
+    
+            <div class="mt-4 flex justify-between text-gray-800">
+                <div class="text-left">
+                    <p class="font-medium">NIT: 74846531</p>
+                    <p class="font-medium">Venta N°: {{ $idVenta }}</p>
+                    <p class="font-medium">Fecha: {{ now()->format('d/m/Y') }}</p>
+                </div>
+                <div class="text-left">
+                    <p class="font-medium">Cliente: <span class="font-normal">{{ $nombre }} {{ $apellidos }}</span></p>
+                    <p class="font-medium">CI: <span class="font-normal">{{ $ciCliente }}</span></p>
+                </div>
+            </div>
+    
+            <h3 class="text-lg font-semibold mt-6 border-b pb-2">Detalles de la Venta</h3>
+            <div class="overflow-x-auto mt-2">
+                <table class="w-full border-collapse border border-gray-300 text-sm">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 px-2 py-1 text-left">Producto</th>
+                            <th class="border border-gray-300 px-2 py-1 text-center">Cantidad</th>
+                            <th class="border border-gray-300 px-2 py-1 text-right">Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($carrito as $item)
+                            <tr>
+                                <td class="border border-gray-300 px-2 py-1">{{ $item['plato']['nombre'] }}</td>
+                                <td class="border border-gray-300 px-2 py-1 text-center">{{ $item['cantidad'] }}</td>
+                                <td class="border border-gray-300 px-2 py-1 text-right">Bs. {{ $item['precio'] }}</td>
+                            </tr>
+                        @empty
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+    
+            <div class="mt-4 text-gray-800">
+                <div class="flex justify-between text-lg font-semibold">
+                    <p>Total:</p>
+                    <p>Bs. {{ $total }}</p>
+                </div>
+                <div class="flex justify-between text-lg font-semibold">
+                    <p>Descuento:</p>
+                    <p>Bs. {{ $des }}</p>
+                </div>
+                <div class="flex justify-between text-lg font-semibold">
+                    <p>Total a Pagar:</p>
+                    <p>Bs. {{ $totalPagar }}</p>
+                </div>
+                <div class="flex justify-between">
+                    <p class="font-medium">Método de Pago:</p>
+                    <p>{{ $tipoPago }}</p>
+                </div>
+            </div>
+    
+            <style>
+                @media print {
+                    .hidden-print {
+                        display: none !important;
+                    }
+                }
+            </style>
+    
+            <div class="mt-6 flex justify-between hidden-print">
+                <button onclick="window.print()" class="bg-green-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-700">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+                <button wire:click="closeModal" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700">
+                    Cerrar
+                </button>
+            </div>
+    
+        </div>
+    </div>
+    
+    
+    
+    @endif
+
 </div>
