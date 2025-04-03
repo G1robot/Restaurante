@@ -27,11 +27,23 @@ class Venta extends Component
     public $tipoPago = "Efectivo";
     public $id_pago;
     public $tiposPago;
+    public $idVenta;
+    public $descuento= 0;
+    public $idPromocion;
+    public $totalPagar;
+    public $des = 0;
+
+    public $showModal = false;
 
     public function render()
     {
         $this->tiposPago = PagoModel::all(); 
         $this->id_pago = PagoModel::where('nombre', 'Efectivo')->value('id_pago');
+        $promocionActiva = PromocionModel::where('estado', 'activo')->first();
+        if ($promocionActiva) {
+            $this->descuento = $promocionActiva->descuento;
+            $this->idPromocion = $promocionActiva->id_promocion;
+        }
         $this->platos = PlatoModel::where('nombre', 'like', '%' . $this->searchPlato . '%')->get();
         return view('livewire.venta');
     }
@@ -41,15 +53,22 @@ class Venta extends Component
             'carrito'=>'required',
             'id_pago'=>'required',
         ]);
+
         $venta = new VentaModel();
-        $venta->fecha=now();
-        $venta->total = $this->total;
-        $venta->id_usuario=1;
+        $venta->fecha = now();
+        $venta->id_promocion = $this->idPromocion;
+        $this->descuento = ($this->total * ($this->descuento / 100));
+        $this->des= $this->descuento;
+        $this->totalPagar = $this->total - $this->descuento;
+        $venta->total = $this->totalPagar;
+        $venta->id_usuario = 1;
         $venta->id_cliente = $this->clienteId;
         $venta->id_pago = $this->id_pago;
         $venta->estado = 'pagado';
         $venta->id_restaurante = 1;
         $venta->save();
+
+        $this->idVenta = $venta->id_venta;
 
         foreach ($this->carrito as $item) {
             $detalle = new DetalleVentaModel();
@@ -61,8 +80,20 @@ class Venta extends Component
             $plato->stock -= $item['cantidad'];
             $plato->save();
         }   
+        $this->openModal();
+    }
+
+    public function openModal()
+    {
+        $this->showModal = true;
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
         $this->reset(['carrito', 'total', 'ciCliente', 'clienteId', 'nombre', 'apellidos']);
     }
+
     public function buscarCliente()
     {
         $cliente = Cliente::where('ci', $this->ciCliente)->first();
