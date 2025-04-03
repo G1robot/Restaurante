@@ -29,7 +29,6 @@ return new class extends Migration
             $table->enum('rol', ['administrador', 'personal']);
             $table->timestamps();
         });
-
         Schema::create('Cliente', function (Blueprint $table) {
             $table->id('id_cliente');
             $table->string('nombre',length:80);
@@ -37,7 +36,6 @@ return new class extends Migration
             $table->string('ci',length:30)->unique();
             $table->timestamps();
         });
-
         Schema::create('Promocion', function (Blueprint $table) {
             $table->id('id_promocion');
             $table->string('nombre',length:80);

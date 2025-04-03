@@ -72,10 +72,8 @@ class Promociones extends Component
         if ($this->id) {
             $promocion = PromocionModel::findOrFail($this->id);
             $promocion->update($data);
-            $this->alert('success', 'Promocion Actualizada');
         } else {
             PromocionModel::create($data);
-            $this->alert('success', 'Promocion Creada');
         }
         $this->reset();
         $this->closeModal();

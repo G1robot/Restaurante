@@ -16,7 +16,7 @@
     </div>
     <div class="flex flex-wrap justify-start gap-6 p-0 m-5">
         @forelse($promociones as $item)
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden w-[270px] h-[500px] flex flex-col m-0">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden w-[calc(25%-24px)] h-[500px] flex flex-col m-0">
                 <img src="/storage/img/{{$item->foto}}" class="w-full h-[60%] object-cover">
                 <div class="p-5 text-center flex-grow">
                     <h3 class="text-xl font-semibold text-gray-800">{{ $item->nombre }}</h3>
@@ -51,7 +51,6 @@
                             focus:ring-2 focus:ring-orange-500 transition">
                         @error('nombre') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
-
                     <div>
                         <label for="descuento" class="block text-sm font-medium text-gray-700">Descuento</label>
                         <input id="descuento" wire:model="descuento" type="number"
@@ -59,7 +58,6 @@
                             focus:ring-2 focus:ring-orange-500 transition">
                         @error('descuento') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                     </div>
-
                     <div>
                         <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha Límite</label>
                         <input id="fecha" wire:model="fecha" type="date"
