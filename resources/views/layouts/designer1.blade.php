@@ -33,7 +33,7 @@
             <div class="flex justify-center items-center">
                 <ul class="flex space-x-12 text-white font-semibold text-lg">
                     <li>
-                        <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="{{ route('usuarios.index') }}">
+                        <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="{{ route('home') }}">
                             <i class="fas fa-utensils mr-2"></i>Menu
                         </a>
                     </li>
