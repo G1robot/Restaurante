@@ -105,7 +105,6 @@ class Venta extends Component
             $this->apellidos = $cliente->apellidos;
         } else {
             $this->reset(['clienteId', 'nombre', 'apellidos']);
-            $this->alert('error', 'Cliente no encontrado.');
         }
     }
     public function clickBuscar(){

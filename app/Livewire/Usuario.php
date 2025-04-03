@@ -14,6 +14,7 @@ class Usuario extends Component
     public $ci = '';
     public $usuario = '';
     public $contrasena = '';
+    public $contrasena1 = '';
     public $rol = '';
     public $search = '';
 
@@ -39,6 +40,7 @@ class Usuario extends Component
         $this->ci = $usuario->ci;
         $this->usuario = $usuario->usuario;
         $this->contrasena = $usuario->contrasena;
+        $this->contrasena1 = $usuario->contrasena;
         $this->rol = $usuario->rol;
         $this->openModal();
     }
@@ -47,9 +49,10 @@ class Usuario extends Component
         $rules = [
             'nombre' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'ci' => 'required|string|max:20|unique:usuarios,ci,' . $this->id,
-            'usuario' => 'required|string|max:255|unique:usuarios,usuario,' . $this->id,
+            'ci' => 'required|string|max:20',
+            'usuario' => 'required|string|max:255',
             'contrasena' => 'required|string|min:6',
+            'contrasena1' => 'required|string|same:contrasena',
             'rol' => 'required|in:administrador,personal',
         ];
         $this->validate($rules);
