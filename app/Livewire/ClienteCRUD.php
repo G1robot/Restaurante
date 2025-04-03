@@ -15,10 +15,25 @@ class ClienteCRUD extends Component
     public $search = '';
 
     protected $rules = [
-        'nombre' => 'required|string|max:80',
-        'apellidos' => 'required|string|max:80',
-        'ci' => 'required|string|max:30|unique:Cliente,ci',
+        'nombre' => 'required|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/|max:80',
+        'apellidos' => 'required|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/|max:80',
+        'ci' => 'required|regex:/^\d{6,}[a-zA-Z0-9]*$/|max:30|unique:Cliente,ci',
     ];
+    protected $messages = [
+        'nombre.required' => 'El nombre es obligatorio.',
+        'nombre.regex' => 'El nombre solo puede contener letras y espacios.',
+        'nombre.max' => 'El nombre no puede exceder los 80 caracteres.',
+    
+        'apellidos.required' => 'Los apellidos son obligatorios.',
+        'apellidos.regex' => 'Los apellidos solo pueden contener letras y espacios.',
+        'apellidos.max' => 'Los apellidos no pueden exceder los 80 caracteres.',
+    
+        'ci.required' => 'El CI es obligatorio.',
+        'ci.regex' => 'El CI debe tener al menos 6 dígitos y puede contener letras o números.',
+        'ci.max' => 'El CI no puede exceder los 30 caracteres.',
+        'ci.unique' => 'El CI ya está registrado.',
+    ];
+    
 
     public function render()
     {
@@ -68,9 +83,9 @@ class ClienteCRUD extends Component
     public function update()
     {
         $this->validate([
-            'nombre' => 'required|string|max:80',
-            'apellidos' => 'required|string|max:80',
-            'ci' => "required|string|max:30|unique:Cliente,ci,{$this->cliente_id},id_cliente",
+            'nombre' => 'required|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/|max:80',
+            'apellidos' => 'required|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/|max:80',
+            'ci' => "required|regex:/^\d{6,}[a-zA-Z0-9]*$/|max:30|unique:Cliente,ci,{$this->cliente_id},id_cliente",
         ]);
 
         $cliente = Cliente::findOrFail($this->cliente_id);
@@ -101,6 +116,8 @@ class ClienteCRUD extends Component
     public function closeModal()
     {
         $this->resetInput();
+        $this->resetValidation(); 
         $this->modalOpen = false;
     }
+
 }
