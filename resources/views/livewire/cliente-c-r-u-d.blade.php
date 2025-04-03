@@ -55,7 +55,7 @@
     {{ $clientes->links() }}
 
     <!-- Modal de Confirmación de Eliminación -->
-    <div x-show="showDeleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div x-show="showDeleteModal" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
         <div class="bg-white p-6 rounded w-1/3 border-2 border-black shadow-xl">
             <h2 class="text-xl font-bold mb-4 text-black text-center">¿Estás seguro de eliminar al Cliente?</h2>
             <p class="text-black text-center mb-4">Esta acción no se puede deshacer.</p>
@@ -72,6 +72,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Modal de agregar/editar cliente -->
     @if($modalOpen)
