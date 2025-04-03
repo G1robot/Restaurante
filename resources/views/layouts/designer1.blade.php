@@ -32,6 +32,17 @@
         <div class="container mx-auto px-6 py-5">
             <div class="flex justify-center items-center">
                 <ul class="flex space-x-12 text-white font-semibold text-lg">
+                    @if (!Auth::guard('web')->check())
+                        <a href="{{ route('login') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Login</a>
+                    @endif
+
+                    @auth('web')
+                        <p class="text-black font-bold">Bienvenido, {{ Auth::guard('web')->user()->nombre }}</p>
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Cerrar sesión</button>
+                        </form>
+                    @endauth
                     <li>
                         <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="{{ route('usuarios.index') }}">
                             <i class="fas fa-utensils mr-2"></i>Menu

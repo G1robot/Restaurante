@@ -9,6 +9,7 @@ use App\Models\PlatoModel;
 use App\Models\PromocionModel;
 use App\Models\Cliente;
 use App\Models\PagoModel;
+use Illuminate\Support\Facades\Auth;
 
 class Venta extends Component
 {
@@ -61,7 +62,7 @@ class Venta extends Component
         $this->des= $this->descuento;
         $this->totalPagar = $this->total - $this->descuento;
         $venta->total = $this->totalPagar;
-        $venta->id_usuario = 1;
+        $venta->id_usuario = Auth::user()->id_usuario;
         $venta->id_cliente = $this->clienteId;
         $venta->id_pago = $this->id_pago;
         $venta->estado = 'pagado';
