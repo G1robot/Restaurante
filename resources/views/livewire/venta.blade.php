@@ -203,7 +203,13 @@
         <div class="text-center text-sm text-gray-600 mt-4">
             <p>Gracias por su compra. ¡Vuelva pronto!</p>
         </div>
-
+        <style>
+            @media print {
+                .hidden-print {
+                    display: none !important;
+                }
+            }
+        </style>
         <!-- Botones -->
         <div class="mt-6 flex justify-between hidden-print">
             <button onclick="window.print()" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition duration-300">
