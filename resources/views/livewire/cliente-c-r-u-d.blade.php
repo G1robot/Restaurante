@@ -1,60 +1,67 @@
 <div class="container mx-auto p-4" x-data="{ showDeleteModal: false, deleteId: null }">
-    <!-- Barra de búsqueda y botón de agregar -->
+    <h2 class="text-center text-4xl font-bold mb-8 relative text-yellow-500">
+        <span class="italic text-gray-900">CLIENTES</span>
+        <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1/4 border-t-2 border-gray-300"></div>
+        <div class="absolute right-0 top-1/2 transform -translate-y-1/2 w-1/4 border-t-2 border-gray-300"></div>
+    </h2>
     <div class="flex justify-between items-center mb-6">
-        <input type="text" wire:model="search" wire:keydown.enter="searchClientes" 
-            placeholder="Buscar cliente..." class="border border-gray-300 p-2 rounded w-1/3 text-black shadow-md focus:outline-none focus:ring-2 focus:ring-red-500">
         <button wire:click="create" x-on:click="$dispatch('reset-modal')"
-            class="bg-red-600 text-white px-6 py-2 rounded shadow-lg hover:bg-red-700 flex items-center gap-2 text-lg font-semibold">
-            <i class="fas fa-user-plus"></i>
-            Agregar Cliente
+            class="bg-red-600 text-white font-bold px-6 py-3 rounded-md shadow-lg hover:bg-red-700 text-lg">
+            NUEVO CLIENTE
         </button>
+        <div class="flex items-center relative w-full max-w-[350px]">
+            <input type="text" wire:model="search" wire:keydown.enter="searchClientes"
+                placeholder="Buscar cliente..."
+                class="py-2 pl-10 pr-4 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f94f2c] focus:border-[#f94f2c] h-10 text-lg text-black">
+            <button wire:click="searchClientes"
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
     </div>
-
-    <!-- Mensaje de éxito con desaparición automática -->
     @if(session()->has('message'))
         <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" 
-            x-show="show" class="bg-green-500 text-white p-2 mb-2 rounded shadow-md">
+            x-show="show" class="bg-green-500 text-white p-3 mb-4 rounded-md shadow-md">
             {{ session('message') }}
         </div>
     @endif
-
-    <!-- Tabla de clientes -->
-    <table class="w-full border border-black shadow-lg">
-        <thead>
-            <tr class="bg-black text-white">
-                <th class="border border-black p-2">Nombre</th>
-                <th class="border border-black p-2">Apellidos</th>
-                <th class="border border-black p-2">CI</th>
-                <th class="border border-black p-2">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($clientes as $cliente)
-                <tr class="bg-white hover:bg-gray-200">
-                    <td class="border border-black p-2 text-black">{{ $cliente->nombre }}</td>
-                    <td class="border border-black p-2 text-black">{{ $cliente->apellidos }}</td>
-                    <td class="border border-black p-2 text-black">{{ $cliente->ci }}</td>
-                    <td class="border border-black p-2">
-                        <div class="flex gap-2 justify-center">
-                            <button wire:click="edit({{ $cliente->id_cliente }})" 
-                                class="bg-orange-500 text-white px-3 py-1 rounded shadow-md hover:bg-orange-700">
-                                <i class="fas fa-pencil"></i>
-                            </button>
-                            <button x-on:click="deleteId = {{ $cliente->id_cliente }}; showDeleteModal = true;" 
-                                class="bg-red-600 text-white px-3 py-1 rounded shadow-lg hover:bg-red-700">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-300 shadow-md">
+            <thead>
+                <tr class="bg-red-600 text-white">
+                    <th class="px-4 py-2 border">Nombre</th>
+                    <th class="px-4 py-2 border">Apellidos</th>
+                    <th class="px-4 py-2 border">CI</th>
+                    <th class="px-4 py-2 border">Acciones</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    <!-- Paginación -->
-    {{ $clientes->links() }}
-
-    <!-- Modal de Confirmación de Eliminación -->
+            </thead>
+            <tbody>
+                @forelse($clientes as $cliente)
+                    <tr class="text-center hover:bg-gray-100">
+                        <td class="px-4 py-2 border text-black">{{ $cliente->nombre }}</td>
+                        <td class="px-4 py-2 border text-black">{{ $cliente->apellidos }}</td>
+                        <td class="px-4 py-2 border text-black">{{ $cliente->ci }}</td>
+                        <td class="px-4 py-2 border">
+                            <div class="flex justify-center gap-3">
+                                <button wire:click="edit({{ $cliente->id_cliente }})"
+                                    class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">
+                                    Editar
+                                </button>
+                                <button x-on:click="deleteId = {{ $cliente->id_cliente }}; showDeleteModal = true;"
+                                    class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">
+                                    Eliminar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" class="text-center px-4 py-4 text-gray-500">No hay clientes registrados.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
     <div x-show="showDeleteModal" x-cloak class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
         <div class="bg-white p-6 rounded w-1/3 border-2 border-black shadow-xl">
             <h2 class="text-xl font-bold mb-4 text-black text-center">¿Estás seguro de eliminar al Cliente?</h2>
@@ -72,39 +79,42 @@
             </div>
         </div>
     </div>
-
-
-    <!-- Modal de agregar/editar cliente -->
     @if($modalOpen)
-        <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center" x-data x-on:reset-modal.window="$wire.set('nombre', ''); $wire.set('apellidos', ''); $wire.set('ci', '');">
-            <div class="bg-white p-6 rounded-lg w-96 shadow-xl">
-                <h2 class="text-xl font-semibold mb-4 text-gray-800 text-center">{{ $cliente_id ? 'Editar Cliente' : 'Agregar Cliente' }}</h2>
-                
-                <label class="block text-gray-700 mb-1">Nombre:</label>
-                <input type="text" wire:model="nombre" class="border border-gray-300 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-red-500">
-                @error('nombre')
-                    <p class="text-red-600 text-sm">{{ $message }}</p>
-                @enderror
-
-                <label class="block text-gray-700 mt-3 mb-1">Apellidos:</label>
-                <input type="text" wire:model="apellidos" class="border border-gray-300 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-red-500">
-                @error('apellidos')
-                    <p class="text-red-600 text-sm">{{ $message }}</p>
-                @enderror
-
-                <label class="block text-gray-700 mt-3 mb-1">CI:</label>
-                <input type="text" wire:model="ci" class="border border-gray-300 p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-red-500">
-                @error('ci')
-                    <p class="text-red-600 text-sm">{{ $message }}</p>
-                @enderror
-
-                <div class="flex justify-end gap-3 mt-4">
-                    <button wire:click="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded shadow-md hover:bg-gray-600">Cancelar</button>
-                    <button wire:click="{{ $cliente_id ? 'update' : 'store' }}" 
-                        class="bg-red-600 text-white px-5 py-2 rounded shadow-md hover:bg-red-700">
-                        {{ $cliente_id ? 'Actualizar' : 'Guardar' }}
-                    </button>
-                </div>
+        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md z-50" x-data x-on:reset-modal.window="$wire.set('nombre', ''); $wire.set('apellidos', ''); $wire.set('ci', '');">
+            <div class="max-w-md w-full mx-4 p-6 bg-white rounded-2xl shadow-xl">
+                <h2 class="text-center text-2xl font-semibold text-gray-800 mb-6">{{ $cliente_id ? 'Editar Cliente' : 'Agregar Cliente' }}</h2>
+                <form wire:submit.prevent="{{ $cliente_id ? 'update' : 'store' }}" class="space-y-6">
+                    <div class="flex flex-col space-y-4">
+                        <div>
+                            <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+                            <input id="nombre" wire:model="nombre" type="text"
+                                class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            @error('nombre') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
+                            <label for="apellidos" class="block text-sm font-medium text-gray-700">Apellidos</label>
+                            <input id="apellidos" wire:model="apellidos" type="text"
+                                class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            @error('apellidos') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+                        <div>
+                            <label for="ci" class="block text-sm font-medium text-gray-700">C.I.</label>
+                            <input id="ci" wire:model="ci" type="text"
+                                class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 transition">
+                            @error('ci') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+                    <div class="flex justify-between space-x-4 mt-4">
+                        <button type="submit" 
+                            class="w-full bg-red-600 text-white font-bold py-3 rounded-md transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            {{ $cliente_id ? 'Actualizar' : 'Guardar' }}
+                        </button>
+                        <button type="button" wire:click="closeModal()"
+                            class="w-full bg-gray-300 text-gray-800 font-bold py-3 rounded-md transition hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     @endif

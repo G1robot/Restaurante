@@ -29,46 +29,61 @@
         </div>
     </header>
     <nav class="bg-red-700 shadow-xl rounded-b-xl">
-        <div class="container mx-auto px-6 py-5">
-            <div class="flex justify-center items-center">
-                <ul class="flex space-x-12 text-white font-semibold text-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                @auth('web')
+                    <div class="bg-white text-red-700 px-4 py-2 rounded-md shadow-md flex items-center space-x-2 text-lg font-semibold">
+                        <i class="fas fa-user-circle"></i>
+                        <span>{{ Auth::guard('web')->user()->nombre }}</span>
+                    </div>
+                @endauth
+                <div class="flex-1 flex justify-center">
+                    <ul class="flex space-x-8 text-white font-semibold text-lg">
+                        <li>
+                            <a class="hover:text-yellow-300 transition-all duration-300" href="{{ route('home') }}">
+                                <i class="fas fa-utensils mr-2"></i>Menu
+                            </a>
+                        </li>
+                        <li>
+                            <a class="hover:text-yellow-300 transition-all duration-300" href="{{ route('usuarios.index') }}">
+                                <i class="fas fa-users mr-2"></i>Usuarios
+                            </a>
+                        </li>
+                        <li>
+                            <a class="hover:text-yellow-300 transition-all duration-300" href="{{ route('promociones.index') }}">
+                                <i class="fas fa-gift mr-2"></i>Promociones
+                            </a>
+                        </li>
+                        <li>
+                            <a class="hover:text-yellow-300 transition-all duration-300" href="{{ route('cliente.index') }}">
+                                <i class="fas fa-users-cog mr-2"></i>Clientes
+                            </a>
+                        </li>
+                        <li>
+                            <a class="hover:text-yellow-300 transition-all duration-300" href="{{ route('ventas.index') }}">
+                                <i class="fas fa-chart-line mr-2"></i>Ventas
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex items-center space-x-4">
                     @if (!Auth::guard('web')->check())
-                        <a href="{{ route('login') }}" class="bg-blue-500 text-white px-4 py-2 rounded">Login</a>
-                    @endif
-
-                    @auth('web')
-                        <p class="text-black font-bold">Bienvenido, {{ Auth::guard('web')->user()->nombre }}</p>
-                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                        <a href="{{ route('login') }}" title="Iniciar sesión"
+                        class="bg-white text-red-700 px-4 py-2 rounded-md shadow-md flex items-center space-x-2 text-lg font-semibold">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Iniciar sesión</span>
+                        </a>
+                    @else
+                        <form action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Cerrar sesión</button>
+                            <button type="submit" title="Cerrar sesión"
+                            class="bg-white text-red-700 px-4 py-2 rounded-md shadow-md flex items-center space-x-2 text-lg font-semibold">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Cerrar sesión</span>
+                            </button>
                         </form>
-                    @endauth
-                    <li>
-                        <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="{{ route('home') }}">
-                            <i class="fas fa-utensils mr-2"></i>Menu
-                        </a>
-                    </li>
-                    <li>
-                        <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="{{ route('usuarios.index') }}">
-                            <i class="fas fa-users mr-2"></i>Usuarios
-                        </a>
-                    </li>
-                    <li>
-                        <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="{{ route('promociones.index') }}">
-                            <i class="fas fa-gift mr-2"></i>Promociones
-                        </a>
-                    </li>
-                    <li>
-                        <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="{{ route('cliente.index') }}">
-                            <i class="fas fa-users-cog mr-2"></i>Clientes
-                        </a>
-                    </li>
-                    <li>
-                        <a class="hover:text-yellow-300 hover:scale-105 transform transition-all ease-in-out duration-300" href="{{ route('ventas.index') }}">
-                            <i class="fas fa-chart-line mr-2"></i>Ventas
-                        </a>
-                    </li>
-                </ul>
+                    @endif
+                </div>
             </div>
         </div>
     </nav>
