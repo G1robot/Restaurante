@@ -93,6 +93,71 @@
                         </button>
                     </div>
                 </form>
+                <div class="flex justify-between items-center">
+                    <h2 class="text-center text-2xl font-semibold text-gray-800 mb-6">Detalles del Platillo</h2>
+                    <button wire:click="closeModal" class="text-gray-600 hover:text-gray-900">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>    
+                <div class="mt-4">
+                    <form class="space-y-4">
+                        <div class="relative z-0 w-full mb-5 group">
+                            <label for="floating_nombre" class="block text-sm font-medium text-gray-700">Producto</label>
+                            <input wire:model="nombre"  type="text" name="floating_nombre" id="floating_nombre" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none 
+                            focus:ring-2 focus:ring-orange-500 transition" placeholder=" " required />
+                            @error('nombre')
+                                <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <label for="floating_descripcion" class="block text-sm font-medium text-gray-700">Descripcion</label>
+                            <input wire:model="descripcion" type="text" name="floating_descripcion" id="floating_descripcion" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none 
+                            focus:ring-2 focus:ring-orange-500 transition" placeholder=" " required />
+                            @error('descripcion')
+                                <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <label for="floating_precio" class="block text-sm font-medium text-gray-700">Precio</label>
+                            <input wire:model="precio" type="text" name="floating_precio" id="floating_precio" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none 
+                            focus:ring-2 focus:ring-orange-500 transition" placeholder=" " required />
+                            @error('precio')
+                                <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <label for="floating_stock" class="block text-sm font-medium text-gray-700">Cantidad</label>
+                            <input wire:model="stock" type="number" name="floating_stock" id="floating_stock" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none 
+                            focus:ring-2 focus:ring-orange-500 transition" placeholder=" " required />
+                            @error('stock')
+                                <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="relative z-0 w-full mb-5 group">
+                            <label for="floating_repeat_foto" class="block text-sm font-medium text-gray-700">Foto</label>
+                            <input wire:model="foto" type="file" name="repeat_foto" id="floating_repeat_foto" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none 
+                            focus:ring-2 focus:ring-orange-500 transition" placeholder=" " required />
+                            @error('foto')
+                                <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        @if ($foto && is_object($foto))
+                            Foto Preview:
+                            <img src="{{ $foto->temporaryUrl() }}" class="w-32 h-auto rounded-lg mx-auto">
+                        @else 
+                            @if ($foto)
+                                Foto Preview:
+                                <img src="{{ asset('storage/img/' . $foto) }}" alt="Preview" class="w-32 h-auto rounded-lg mx-auto">                                                
+                            @endif
+                        @endif
+                    </form>
+                </div>
+                <div class="flex justify-between space-x-4 mt-4">
+                    <button wire:click="enviarClick()" type="submit" class="w-full bg-red-600 text-white font-bold py-3 rounded-md transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-orange-500">Enviar</button>
+                    <button wire:click="closeModal" class="w-full bg-gray-300 text-gray-800 font-bold py-3 rounded-md transition hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500">Cerrar</button>
+                </div>
             </div>
         </div>
     @endif
